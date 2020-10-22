@@ -9,7 +9,7 @@ def gameAlgorithm(rewardMatrices, policies, episodes, alpha):
     for _ in range(episodes):
         for i in range(2):  # i switches between our 2 players
             # ith index refers to player, the 0th index of each policy is the first probability, the 1st is the second
-            # rewardMatrices[i][0][0] is both players choose cooperate, [i][0][1] is if one chooses to defect
+            # rewardMatrices[i][0][0] is both players choose cooperate, [i][0][1] is if p2 chooses to defect
             # [i][1][0] is if p1 chooses to defect, p2 chooses to cooperate
             # [i][1][1] both defect
 

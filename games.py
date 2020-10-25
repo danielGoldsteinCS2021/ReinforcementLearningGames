@@ -6,8 +6,8 @@ random.seed(1337)
 
 
 def gameAlgorithm(rewardMatrices, policies, episodes, alpha, num_moves):
-    p1_policies = np.empty([50000, num_moves])
-    p2_policies = np.zeros([50000, num_moves])
+    p1_policies = np.empty([episodes, num_moves])
+    p2_policies = np.empty([episodes, num_moves])
     for k in range(episodes):
         p1_policies[k] = policies[0]
         p2_policies[k] = policies[1]

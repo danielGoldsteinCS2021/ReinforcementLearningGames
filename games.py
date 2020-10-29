@@ -19,17 +19,18 @@ Modified algo
 
 
 def modifiedAlgorithm(rewardMatrices, policies, episodes, alpha, num_moves):
-    p1_policies = np.empty([episodes, num_moves])
-    p2_policies = np.empty([episodes, num_moves])
-    for k in range(episodes):
+    p1_policies = np.asarray([policies[0]], dtype=np.float64)
+    p2_policies = np.asarray([policies[1]], dtype=np.float64)
+    p1_expected = []
+    p2_expected = []
+    for i in range(num_moves):
+        p1_expected.append(policies[0][i])
+        p2_expected.append(policies[1][i])
 
+    for k in range(episodes):
         # Store policies from previous episode
         p1_old = policies[0].copy()
         p2_old = policies[1].copy()
-
-        # Keep track of policy at current episode for matplotlib figures
-        p1_policies[k] = policies[0].copy()
-        p2_policies[k] = policies[1].copy()
 
         # Generate actions for each player
         p1_action = generateAction(0, policies)
@@ -38,21 +39,6 @@ def modifiedAlgorithm(rewardMatrices, policies, episodes, alpha, num_moves):
         # Determine rewards for each player action
         p1_reward = rewardMatrices[0][p1_action][p2_action]
         p2_reward = rewardMatrices[1][p1_action][p2_action]
-
-        # Expected values
-        p1_expected[p1_action] = p1_expected[p1_action] + \
-            alpha * p1_reward * (1-p1_old[p1_action])
-        for o in range(len(policies[0])):
-            if o != p1_action:
-                p1_expected[o] = p1_expected[o] - alpha * \
-                    p1_reward * p1_old[o]
-        p2_expected[p2_action] = p2_expected[p2_action] + \
-            alpha * p2_reward * (1-p2_old[p2_action])
-        # For all other actions o =/= p2_action
-        for o in range(len(policies[1])):
-            if o != p2_action:
-                p2_expected[o] = p2_expected[o] - alpha * \
-                    p2_reward * p2_old[o]
 
         # Player 1
         # If chosen action is taken
@@ -82,6 +68,20 @@ def modifiedAlgorithm(rewardMatrices, policies, episodes, alpha, num_moves):
 
         # Normalize policies
         policies = normalize(policies)
+
+        # Keep track of policy at current episode for matplotlib figures
+        p1_policies = np.append(p1_policies, [policies[0]], axis=0)
+        p2_policies = np.append(p2_policies, [policies[1]], axis=0)
+
+        # Update expected values
+        p1_mean = np.mean(p1_policies, axis=0)
+        p2_mean = np.mean(p2_policies, axis=0)
+        for i in range(num_moves):
+            p1_expected[i] = p1_expected[i] + \
+                alpha * (p1_mean[i] - p1_expected[i])
+            p2_expected[i] = p2_expected[i] + \
+                alpha * (p2_mean[i] - p2_expected[i])
+
     return policies, [p1_policies, p2_policies]
 
 

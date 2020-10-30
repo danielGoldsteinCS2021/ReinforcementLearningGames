@@ -108,8 +108,14 @@ def normalize(policies):
     return [p1, p2]
 
 
-if __name__ == "__main__":
+def generateValue(policies, rewardMatrices):
+    p1 = policies[0]
+    p2 = policies[1]
+    value = np.dot(np.dot(np.transpose(p1), rewardMatrices), p2)
+    return value
 
+
+if __name__ == "__main__":
     '''UNMODIFIED ALGORITHM'''
 
     '''Prisoner's'''
@@ -140,6 +146,8 @@ if __name__ == "__main__":
     plt.ylabel('Probability')
     plt.legend()
     plt.show()
+    print("Prisoner's (Unmodified) Value of the Game:")
+    print(generateValue(policies, rewardMatrices))
 
     '''Pennies'''
     player1, player2 = [[1, -1], [-1, 1]], [[-1, 1], [1, -1]]
@@ -169,6 +177,8 @@ if __name__ == "__main__":
     plt.ylabel('Probability')
     plt.legend()
     plt.show()
+    print("Pennies (Unmodified) Value of the Game:")
+    print(generateValue(policies, rewardMatrices))
 
     '''Rock Paper Scissors'''
     player1, player2 = [[0, -1, 1], [1, 0, -1],
@@ -205,6 +215,8 @@ if __name__ == "__main__":
     plt.ylabel('Probability')
     plt.legend()
     plt.show()
+    print("Rock Paper Scissors (Unmodified) Value of the Game:")
+    print(generateValue(policies, rewardMatrices))
 
     '''MODIFIED ALGORITHM'''
 
@@ -236,6 +248,8 @@ if __name__ == "__main__":
     plt.ylabel('Probability')
     plt.legend()
     plt.show()
+    print("Prisoner's (Modified) Value of the Game:")
+    print(generateValue(policies, rewardMatrices))
 
     '''Pennies'''
     player1, player2 = [[1, -1], [-1, 1]], [[-1, 1], [1, -1]]
@@ -265,6 +279,8 @@ if __name__ == "__main__":
     plt.ylabel('Probability')
     plt.legend()
     plt.show()
+    print("Pennies (Modified) Value of the Game:")
+    print(generateValue(policies, rewardMatrices))
 
     '''Rock Paper Scissors'''
     player1, player2 = [[0, -1, 1], [1, 0, -1],
@@ -301,3 +317,5 @@ if __name__ == "__main__":
     plt.ylabel('Probability')
     plt.legend()
     plt.show()
+    print("Rock Paper Scissors (Modified) Value of the Game:")
+    print(generateValue(policies, rewardMatrices))
